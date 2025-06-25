@@ -1,9 +1,8 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Header from '@/components/Header';
-import { CheckCircle, XCircle, AlertTriangle, User, ShoppingCart, CreditCard, Package } from 'lucide-react';
+import { CheckCircle, XCircle, AlertTriangle, User, ShoppingCart, CreditCard, Package, Monitor } from 'lucide-react';
 
 const TestCases = () => {
   const testScenarios = {
@@ -122,7 +121,7 @@ const TestCases = () => {
           'Navigate to /products',
           'Verify products grid is displayed'
         ],
-        expected: 'All 12 products should be visible with images, names, prices',
+        expected: 'All 14 products should be visible with images, names, prices',
         testData: 'N/A'
       },
       {
@@ -184,6 +183,111 @@ const TestCases = () => {
         ],
         expected: 'No results message should appear gracefully',
         testData: 'Search: "!@#$%^&*()"'
+      }
+    ],
+    specialProducts: [
+      {
+        id: 'SPECIAL_001',
+        type: 'positive',
+        title: 'Iframe Product Display',
+        steps: [
+          'Navigate to /products',
+          'Locate "Interactive iframe Widget" product (ID: 13)',
+          'Verify iframe content loads',
+          'Check iframe has proper testid attribute'
+        ],
+        expected: 'Iframe displays with colored background, text, and interactive button',
+        testData: 'Product ID: 13'
+      },
+      {
+        id: 'SPECIAL_002',
+        type: 'positive',
+        title: 'Iframe Button Interaction',
+        steps: [
+          'Navigate to /products',
+          'Find "Interactive iframe Widget" product',
+          'Click button inside iframe',
+          'Verify alert appears'
+        ],
+        expected: 'Alert shows "Button clicked in iframe!"',
+        testData: 'iframe-content-13'
+      },
+      {
+        id: 'SPECIAL_003',
+        type: 'positive',
+        title: 'Shadow DOM Product Display',
+        steps: [
+          'Navigate to /products',
+          'Locate "Shadow DOM Component" product (ID: 14)',
+          'Verify shadow DOM content renders',
+          'Check shadow host has proper testid'
+        ],
+        expected: 'Shadow DOM content displays with gradient background and encapsulated styles',
+        testData: 'Product ID: 14'
+      },
+      {
+        id: 'SPECIAL_004',
+        type: 'positive',
+        title: 'Shadow DOM Button Interaction',
+        steps: [
+          'Navigate to /products',
+          'Find "Shadow DOM Component" product',
+          'Click button inside shadow DOM',
+          'Verify alert appears'
+        ],
+        expected: 'Alert shows "Button clicked in Shadow DOM!"',
+        testData: 'shadow-button-14'
+      },
+      {
+        id: 'SPECIAL_005',
+        type: 'positive',
+        title: 'Special Product Badges',
+        steps: [
+          'Navigate to /products',
+          'Locate iframe and shadow DOM products',
+          'Verify special badges are displayed',
+          'Check badge text shows correct type'
+        ],
+        expected: 'iframe product shows "IFRAME" badge, shadow DOM shows "SHADOWDOM" badge',
+        testData: 'special-badge-13, special-badge-14'
+      },
+      {
+        id: 'SPECIAL_006',
+        type: 'edge',
+        title: 'Special Products in Cart',
+        steps: [
+          'Add iframe product to cart',
+          'Add shadow DOM product to cart',
+          'Navigate to /cart',
+          'Verify products display correctly'
+        ],
+        expected: 'Special products should appear in cart without special content, only basic product info',
+        testData: 'Cart with special products'
+      },
+      {
+        id: 'SPECIAL_007',
+        type: 'edge',
+        title: 'Special Product Details View',
+        steps: [
+          'Navigate to /products',
+          'Click "View Details" on iframe product',
+          'Verify product details page',
+          'Check if special content renders'
+        ],
+        expected: 'Product details page should display with special content if implemented',
+        testData: 'Product details for ID: 13'
+      },
+      {
+        id: 'SPECIAL_008',
+        type: 'negative',
+        title: 'Special Content Accessibility',
+        steps: [
+          'Navigate to /products using screen reader',
+          'Test iframe and shadow DOM products',
+          'Verify accessible content'
+        ],
+        expected: 'Special content should have proper accessibility attributes and fallbacks',
+        testData: 'Accessibility testing'
       }
     ],
     cart: [
@@ -359,21 +463,21 @@ const TestCases = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4" data-testid="test-cases-title">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4" data-testid="test-cases-title">
             UI Test Cases - TestMart E-Commerce
           </h1>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
             Comprehensive test scenarios covering positive, negative, and edge cases for the entire user journey.
           </p>
         </div>
 
         <Tabs defaultValue="authentication" className="space-y-6" data-testid="test-cases-tabs">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="authentication" className="flex items-center" data-testid="auth-tab">
               <User className="h-4 w-4 mr-2" />
               Authentication
@@ -381,6 +485,10 @@ const TestCases = () => {
             <TabsTrigger value="products" className="flex items-center" data-testid="products-tab">
               <Package className="h-4 w-4 mr-2" />
               Products
+            </TabsTrigger>
+            <TabsTrigger value="specialProducts" className="flex items-center" data-testid="special-products-tab">
+              <Monitor className="h-4 w-4 mr-2" />
+              Special Products
             </TabsTrigger>
             <TabsTrigger value="cart" className="flex items-center" data-testid="cart-tab">
               <ShoppingCart className="h-4 w-4 mr-2" />
@@ -396,24 +504,24 @@ const TestCases = () => {
             <TabsContent key={category} value={category} className="space-y-4" data-testid={`${category}-content`}>
               <div className="grid gap-4">
                 {scenarios.map((scenario) => (
-                  <Card key={scenario.id} className="hover:shadow-md transition-shadow" data-testid={`test-case-${scenario.id}`}>
+                  <Card key={scenario.id} className="hover:shadow-md transition-shadow dark:bg-gray-800 dark:border-gray-700" data-testid={`test-case-${scenario.id}`}>
                     <CardHeader>
                       <div className="flex items-center justify-between">
-                        <CardTitle className="flex items-center space-x-2">
+                        <CardTitle className="flex items-center space-x-2 dark:text-white">
                           {getTypeIcon(scenario.type)}
                           <span data-testid={`test-title-${scenario.id}`}>{scenario.id}: {scenario.title}</span>
                         </CardTitle>
                         {getTypeBadge(scenario.type)}
                       </div>
-                      <CardDescription data-testid={`test-data-${scenario.id}`}>
+                      <CardDescription data-testid={`test-data-${scenario.id}`} className="dark:text-gray-400">
                         Test Data: {scenario.testData}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="grid md:grid-cols-2 gap-4">
                         <div>
-                          <h4 className="font-semibold mb-2">Test Steps:</h4>
-                          <ol className="list-decimal list-inside space-y-1 text-sm">
+                          <h4 className="font-semibold mb-2 dark:text-white">Test Steps:</h4>
+                          <ol className="list-decimal list-inside space-y-1 text-sm dark:text-gray-300">
                             {scenario.steps.map((step, index) => (
                               <li key={index} data-testid={`step-${scenario.id}-${index}`}>
                                 {step}
@@ -422,8 +530,8 @@ const TestCases = () => {
                           </ol>
                         </div>
                         <div>
-                          <h4 className="font-semibold mb-2">Expected Result:</h4>
-                          <p className="text-sm text-gray-600" data-testid={`expected-${scenario.id}`}>
+                          <h4 className="font-semibold mb-2 dark:text-white">Expected Result:</h4>
+                          <p className="text-sm text-gray-600 dark:text-gray-400" data-testid={`expected-${scenario.id}`}>
                             {scenario.expected}
                           </p>
                         </div>
@@ -436,18 +544,18 @@ const TestCases = () => {
           ))}
         </Tabs>
 
-        <Card className="mt-8" data-testid="test-credentials">
+        <Card className="mt-8 dark:bg-gray-800 dark:border-gray-700" data-testid="test-credentials">
           <CardHeader>
-            <CardTitle>Test Credentials & Data</CardTitle>
-            <CardDescription>
+            <CardTitle className="dark:text-white">Test Credentials & Data</CardTitle>
+            <CardDescription className="dark:text-gray-400">
               Use these credentials and test data for manual and automated testing
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold mb-3">Login Credentials:</h4>
-                <div className="space-y-2 text-sm">
+                <h4 className="font-semibold mb-3 dark:text-white">Login Credentials:</h4>
+                <div className="space-y-2 text-sm dark:text-gray-300">
                   <div><strong>Admin:</strong> admin@test.com / admin123</div>
                   <div><strong>Buyer:</strong> buyer@test.com / buyer123</div>
                   <div><strong>Guest:</strong> guest@test.com / guest123</div>
@@ -455,12 +563,19 @@ const TestCases = () => {
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold mb-3">Valid Coupon Codes:</h4>
-                <div className="space-y-2 text-sm">
+                <h4 className="font-semibold mb-3 dark:text-white">Valid Coupon Codes:</h4>
+                <div className="space-y-2 text-sm dark:text-gray-300">
                   <div><strong>SAVE10:</strong> 10% discount</div>
                   <div><strong>WELCOME20:</strong> 20% discount</div>
                   <div><strong>TEST50:</strong> 50% discount</div>
                 </div>
+              </div>
+            </div>
+            <div className="mt-6">
+              <h4 className="font-semibold mb-3 dark:text-white">Special Products:</h4>
+              <div className="space-y-2 text-sm dark:text-gray-300">
+                <div><strong>ID 13:</strong> Interactive iframe Widget (iframe content)</div>
+                <div><strong>ID 14:</strong> Shadow DOM Component (shadow DOM content)</div>
               </div>
             </div>
           </CardContent>
