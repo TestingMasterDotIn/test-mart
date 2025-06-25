@@ -8,6 +8,8 @@ export interface Product {
   category: string;
   description: string;
   inStock: boolean;
+  isSpecial?: boolean;
+  specialType?: 'iframe' | 'shadowdom';
 }
 
 export const products: Product[] = [
@@ -130,6 +132,30 @@ export const products: Product[] = [
     category: 'Home',
     description: 'Ceramic coffee mug with heat-resistant handle.',
     inStock: true
+  },
+  {
+    id: '13',
+    name: 'Interactive iframe Widget',
+    price: 199.99,
+    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400',
+    rating: 4.7,
+    category: 'Electronics',
+    description: 'Advanced widget with embedded iframe content for testing iframe interactions.',
+    inStock: true,
+    isSpecial: true,
+    specialType: 'iframe'
+  },
+  {
+    id: '14',
+    name: 'Shadow DOM Component',
+    price: 299.99,
+    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400',
+    rating: 4.8,
+    category: 'Electronics',
+    description: 'Special component using Shadow DOM for encapsulated testing scenarios.',
+    inStock: true,
+    isSpecial: true,
+    specialType: 'shadowdom'
   }
 ];
 

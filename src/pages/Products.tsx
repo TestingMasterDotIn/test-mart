@@ -6,6 +6,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Header from '@/components/Header';
+import SpecialProductContent from '@/components/SpecialProductContent';
 import { useCart } from '@/contexts/CartContext';
 import { products, categories, Product } from '@/data/products';
 import { Star, ShoppingCart, Eye } from 'lucide-react';
@@ -65,12 +66,12 @@ const Products = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Header onSearch={handleSearch} searchQuery={searchQuery} />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4" data-testid="products-title">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4" data-testid="products-title">
             Our Products
           </h1>
           
@@ -107,7 +108,7 @@ const Products = () => {
             </Select>
           </div>
 
-          <p className="text-gray-600" data-testid="products-count">
+          <p className="text-gray-600 dark:text-gray-400" data-testid="products-count">
             Showing {filteredProducts.length} of {products.length} products
           </p>
         </div>
@@ -115,9 +116,9 @@ const Products = () => {
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" data-testid="products-grid">
           {filteredProducts.map(product => (
-            <Card key={product.id} className="group hover:shadow-lg transition-shadow flex flex-col h-full" data-testid={`product-card-${product.id}`}>
+            <Card key={product.id} className="group hover:shadow-lg transition-shadow flex flex-col h-full dark:bg-gray-800 dark:border-gray-700" data-testid={`product-card-${product.id}`}>
               <CardContent className="p-4 flex-1">
-                <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-100">
+                <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700">
                   <img
                     src={product.image}
                     alt={product.name}
@@ -127,14 +128,21 @@ const Products = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <h3 className="font-semibold text-lg line-clamp-2" data-testid={`product-name-${product.id}`}>
-                    {product.name}
-                  </h3>
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-lg line-clamp-2 dark:text-white" data-testid={`product-name-${product.id}`}>
+                      {product.name}
+                    </h3>
+                    {product.isSpecial && (
+                      <Badge variant="secondary" className="ml-2" data-testid={`special-badge-${product.id}`}>
+                        {product.specialType?.toUpperCase()}
+                      </Badge>
+                    )}
+                  </div>
                   
                   <div className="flex items-center space-x-2">
                     <div className="flex items-center">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm text-gray-600 ml-1" data-testid={`product-rating-${product.id}`}>
+                      <span className="text-sm text-gray-600 dark:text-gray-400 ml-1" data-testid={`product-rating-${product.id}`}>
                         {product.rating}
                       </span>
                     </div>
@@ -143,7 +151,7 @@ const Products = () => {
                     </Badge>
                   </div>
                   
-                  <p className="text-sm text-gray-600 line-clamp-2" data-testid={`product-description-${product.id}`}>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2" data-testid={`product-description-${product.id}`}>
                     {product.description}
                   </p>
                   
@@ -158,6 +166,8 @@ const Products = () => {
                     )}
                   </div>
                 </div>
+
+                {product.isSpecial && <SpecialProductContent product={product} />}
               </CardContent>
               
               <CardFooter className="p-4 pt-0 space-x-2 mt-auto">
@@ -184,7 +194,7 @@ const Products = () => {
 
         {filteredProducts.length === 0 && (
           <div className="text-center py-12" data-testid="no-products-message">
-            <p className="text-gray-500 text-lg">No products found matching your criteria.</p>
+            <p className="text-gray-500 dark:text-gray-400 text-lg">No products found matching your criteria.</p>
           </div>
         )}
       </main>

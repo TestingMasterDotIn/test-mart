@@ -1,4 +1,3 @@
-
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -6,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
 import { ShoppingCart, User, LogOut, Search, Home, TestTube } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import ThemeToggle from './ThemeToggle';
 
 interface HeaderProps {
   onSearch?: (query: string) => void;
@@ -28,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery = '' }) => {
   };
 
   return (
-    <header className="bg-white shadow-sm border-b" data-testid="main-header">
+    <header className="bg-white dark:bg-gray-900 shadow-sm border-b dark:border-gray-700" data-testid="main-header">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-4">
@@ -40,14 +40,14 @@ const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery = '' }) => {
             <nav className="hidden md:flex space-x-4">
               <Link 
                 to="/products" 
-                className="text-gray-600 hover:text-primary transition-colors"
+                className="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors"
                 data-testid="products-nav-link"
               >
                 Products
               </Link>
               <Link 
                 to="/test-cases" 
-                className="text-gray-600 hover:text-primary transition-colors flex items-center"
+                className="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors flex items-center"
                 data-testid="test-cases-nav-link"
               >
                 <TestTube className="h-4 w-4 mr-1" />
@@ -56,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery = '' }) => {
               {isAuthenticated && (
                 <Link 
                   to="/dashboard" 
-                  className="text-gray-600 hover:text-primary transition-colors"
+                  className="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors"
                   data-testid="dashboard-nav-link"
                 >
                   Dashboard
@@ -82,6 +82,8 @@ const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery = '' }) => {
           )}
 
           <div className="flex items-center space-x-4">
+            <ThemeToggle />
+            
             <Link to="/cart" className="relative" data-testid="cart-link">
               <Button variant="ghost" size="sm" className="relative">
                 <ShoppingCart className="h-5 w-5" />
@@ -98,7 +100,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery = '' }) => {
 
             {isAuthenticated ? (
               <div className="flex items-center space-x-2">
-                <span className="text-sm text-gray-600" data-testid="user-welcome">
+                <span className="text-sm text-gray-600 dark:text-gray-300" data-testid="user-welcome">
                   Welcome, {user?.name}
                 </span>
                 <Button 
