@@ -115,8 +115,8 @@ const Products = () => {
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" data-testid="products-grid">
           {filteredProducts.map(product => (
-            <Card key={product.id} className="group hover:shadow-lg transition-shadow" data-testid={`product-card-${product.id}`}>
-              <CardContent className="p-4">
+            <Card key={product.id} className="group hover:shadow-lg transition-shadow flex flex-col h-full" data-testid={`product-card-${product.id}`}>
+              <CardContent className="p-4 flex-1">
                 <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-100">
                   <img
                     src={product.image}
@@ -160,7 +160,7 @@ const Products = () => {
                 </div>
               </CardContent>
               
-              <CardFooter className="p-4 pt-0 space-x-2">
+              <CardFooter className="p-4 pt-0 space-x-2 mt-auto">
                 <Link to={`/products/${product.id}`} className="flex-1">
                   <Button variant="outline" className="w-full" data-testid={`view-details-${product.id}`}>
                     <Eye className="h-4 w-4 mr-2" />

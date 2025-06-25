@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
-import { ShoppingCart, User, LogOut, Search, Home } from 'lucide-react';
+import { ShoppingCart, User, LogOut, Search, Home, TestTube } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
 interface HeaderProps {
@@ -44,6 +44,14 @@ const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery = '' }) => {
                 data-testid="products-nav-link"
               >
                 Products
+              </Link>
+              <Link 
+                to="/test-cases" 
+                className="text-gray-600 hover:text-primary transition-colors flex items-center"
+                data-testid="test-cases-nav-link"
+              >
+                <TestTube className="h-4 w-4 mr-1" />
+                Test Cases
               </Link>
               {isAuthenticated && (
                 <Link 
