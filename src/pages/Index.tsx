@@ -8,16 +8,16 @@ import { ShoppingBag, Users, Shield, Star } from 'lucide-react';
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background text-foreground">
       <Header />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero Section */}
-        <div className="text-center mb-16" data-testid="hero-section">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+        <div className="text-center mb-16" data-testid="hero-section" data-lov-id="src\pages\Index.tsx:14:6">
+          <h1 className="text-4xl font-bold mb-4">
             Welcome to TestMart
           </h1>
-          <p className="text-xl text-gray-600 mb-8">
+          <p className="text-xl text-muted-foreground mb-8">
             Your Complete E-commerce Testing Platform
           </p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -48,33 +48,33 @@ const Index = () => {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="p-4 bg-green-50 rounded-lg" data-testid="valid-admin-creds">
-                <Badge className="mb-2 bg-green-100 text-green-800">Valid - Admin</Badge>
+              <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg" data-testid="valid-admin-creds">
+                <Badge className="mb-2 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Valid - Admin</Badge>
                 <p className="text-sm font-mono">admin@test.com</p>
                 <p className="text-sm font-mono">admin123</p>
               </div>
               
-              <div className="p-4 bg-blue-50 rounded-lg" data-testid="valid-buyer-creds">
-                <Badge className="mb-2 bg-blue-100 text-blue-800">Valid - Buyer</Badge>
+              <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg" data-testid="valid-buyer-creds">
+                <Badge className="mb-2 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">Valid - Buyer</Badge>
                 <p className="text-sm font-mono">buyer@test.com</p>
                 <p className="text-sm font-mono">buyer123</p>
               </div>
               
-              <div className="p-4 bg-gray-50 rounded-lg" data-testid="valid-guest-creds">
-                <Badge className="mb-2 bg-gray-100 text-gray-800">Valid - Guest</Badge>
+              <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg" data-testid="valid-guest-creds">
+                <Badge className="mb-2 bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">Valid - Guest</Badge>
                 <p className="text-sm font-mono">guest@test.com</p>
                 <p className="text-sm font-mono">guest123</p>
               </div>
               
-              <div className="p-4 bg-red-50 rounded-lg" data-testid="locked-user-creds">
-                <Badge className="mb-2 bg-red-100 text-red-800">Locked User</Badge>
+              <div className="p-4 bg-red-50 dark:bg-red-950 rounded-lg" data-testid="locked-user-creds">
+                <Badge className="mb-2 bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">Locked User</Badge>
                 <p className="text-sm font-mono">locked@test.com</p>
                 <p className="text-sm font-mono">locked123</p>
               </div>
             </div>
             
-            <div className="mt-4 p-4 bg-yellow-50 rounded-lg" data-testid="invalid-creds">
-              <Badge className="mb-2 bg-yellow-100 text-yellow-800">Invalid Credentials</Badge>
+            <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-950 rounded-lg" data-testid="invalid-creds">
+              <Badge className="mb-2 bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">Invalid Credentials</Badge>
               <p className="text-sm">Try: wrong@test.com / wrongpass</p>
             </div>
           </CardContent>
@@ -90,17 +90,17 @@ const Index = () => {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 bg-green-50 rounded-lg text-center" data-testid="coupon-save10">
+              <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg text-center" data-testid="coupon-save10">
                 <p className="font-mono font-bold text-lg">SAVE10</p>
-                <p className="text-sm text-gray-600">10% Discount</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">10% Discount</p>
               </div>
-              <div className="p-4 bg-blue-50 rounded-lg text-center" data-testid="coupon-welcome20">
+              <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg text-center" data-testid="coupon-welcome20">
                 <p className="font-mono font-bold text-lg">WELCOME20</p>
-                <p className="text-sm text-gray-600">20% Discount</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">20% Discount</p>
               </div>
-              <div className="p-4 bg-purple-50 rounded-lg text-center" data-testid="coupon-test50">
+              <div className="p-4 bg-purple-50 dark:bg-purple-950 rounded-lg text-center" data-testid="coupon-test50">
                 <p className="font-mono font-bold text-lg">TEST50</p>
-                <p className="text-sm text-gray-600">50% Discount</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">50% Discount</p>
               </div>
             </div>
           </CardContent>
@@ -116,7 +116,7 @@ const Index = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 Test different user roles: Admin, Buyer, and Guest with varying permissions.
               </p>
             </CardContent>
@@ -130,7 +130,7 @@ const Index = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 From product browsing to checkout completion with cart persistence.
               </p>
             </CardContent>
@@ -144,7 +144,7 @@ const Index = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600">
+              <p className="text-muted-foreground">
                 Built with automation testing in mind using proper data attributes and semantic HTML.
               </p>
             </CardContent>

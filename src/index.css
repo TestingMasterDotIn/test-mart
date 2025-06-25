@@ -101,3 +101,14 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom utility classes */
+.card-button {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -47,15 +47,15 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background text-foreground">
       <Header />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900" data-testid="dashboard-title">
+          <h1 className="text-3xl font-bold" data-testid="dashboard-title">
             Welcome back, {user.name}!
           </h1>
-          <p className="text-gray-600 mt-2" data-testid="user-role">
+          <p className="text-muted-foreground mt-2" data-testid="user-role">
             Role: <Badge variant="secondary">{user.role}</Badge>
           </p>
         </div>

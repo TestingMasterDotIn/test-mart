@@ -9,16 +9,16 @@ const ThankYou = () => {
   const orderNumber = `TM${Date.now().toString().slice(-6)}`;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background text-foreground">
       <Header />
       
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-8">
           <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" data-testid="success-icon" />
-          <h1 className="text-4xl font-bold text-gray-900 mb-4" data-testid="thank-you-title">
+          <h1 className="text-4xl font-bold mb-4" data-testid="thank-you-title">
             Thank You for Your Order!
           </h1>
-          <p className="text-xl text-gray-600" data-testid="order-confirmation">
+          <p className="text-xl text-muted-foreground" data-testid="order-confirmation">
             Your order has been successfully placed and is being processed.
           </p>
         </div>
@@ -36,18 +36,18 @@ const ThankYou = () => {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <h4 className="font-semibold text-gray-900">Order Number</h4>
+                <h4 className="font-semibold">Order Number</h4>
                 <p className="text-lg font-mono" data-testid="order-number">{orderNumber}</p>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900">Order Date</h4>
+                <h4 className="font-semibold">Order Date</h4>
                 <p data-testid="order-date">{new Date().toLocaleDateString()}</p>
               </div>
             </div>
 
             <div>
-              <h4 className="font-semibold text-gray-900 mb-2">What's Next?</h4>
-              <ul className="list-disc list-inside space-y-1 text-gray-600">
+              <h4 className="font-semibold mb-2">What's Next?</h4>
+              <ul className="list-disc list-inside space-y-1 text-muted-foreground">
                 <li>You'll receive an email confirmation shortly</li>
                 <li>We'll notify you when your order ships</li>
                 <li>Track your order in your dashboard</li>
@@ -87,7 +87,7 @@ const ThankYou = () => {
           </Link>
         </div>
 
-        <div className="mt-12 text-center text-gray-500" data-testid="footer-message">
+        <div className="mt-12 text-center text-muted-foreground" data-testid="footer-message">
           <p>This is a test e-commerce application for automation testing purposes.</p>
           <p className="mt-2">No real orders were placed or payments processed.</p>
         </div>

@@ -16,7 +16,7 @@ const ProductDetails = () => {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-background text-foreground">
         <Header />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
@@ -40,7 +40,7 @@ const ProductDetails = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background text-foreground">
       <Header />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -107,11 +107,12 @@ const ProductDetails = () => {
                 onClick={handleAddToCart}
                 disabled={!product.inStock}
                 size="lg"
-                className="w-full"
+                className="w-full card-button"
                 data-testid="add-to-cart-detail"
+                data-component-name="Card"
               >
-                <ShoppingCart className="h-5 w-5 mr-2" />
-                Add to Cart
+                <ShoppingCart className="h-5 w-5 mr-2 flex-shrink-0" />
+                <span className="whitespace-nowrap">Add to Cart</span>
               </Button>
             </div>
           </div>

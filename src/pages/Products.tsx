@@ -66,7 +66,7 @@ const Products = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-background text-foreground">
       <Header onSearch={handleSearch} searchQuery={searchQuery} />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -116,13 +116,13 @@ const Products = () => {
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" data-testid="products-grid">
           {filteredProducts.map(product => (
-            <Card key={product.id} className="group hover:shadow-lg transition-shadow flex flex-col h-full dark:bg-gray-800 dark:border-gray-700" data-testid={`product-card-${product.id}`}>
+            <Card key={product.id} className="group hover:shadow-lg transition-shadow flex flex-col h-full dark:bg-gray-800 dark:border-gray-700 overflow-hidden" data-testid={`product-card-${product.id}`}>
               <CardContent className="p-4 flex-1">
                 <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-700">
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform"
                     data-testid={`product-image-${product.id}`}
                   />
                 </div>
@@ -139,14 +139,14 @@ const Products = () => {
                     )}
                   </div>
                   
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 flex-wrap gap-y-1">
                     <div className="flex items-center">
                       <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                       <span className="text-sm text-gray-600 dark:text-gray-400 ml-1" data-testid={`product-rating-${product.id}`}>
                         {product.rating}
                       </span>
                     </div>
-                    <Badge variant="secondary" data-testid={`product-category-${product.id}`}>
+                    <Badge variant="secondary" className="text-xs" data-testid={`product-category-${product.id}`}>
                       {product.category}
                     </Badge>
                   </div>
@@ -170,22 +170,23 @@ const Products = () => {
                 {product.isSpecial && <SpecialProductContent product={product} />}
               </CardContent>
               
-              <CardFooter className="p-4 pt-0 space-x-2 mt-auto">
-                <Link to={`/products/${product.id}`} className="flex-1">
-                  <Button variant="outline" className="w-full" data-testid={`view-details-${product.id}`}>
-                    <Eye className="h-4 w-4 mr-2" />
-                    View Details
+              <CardFooter className="p-4 pt-0 flex flex-col space-y-2 md:space-y-0 md:flex-row md:space-x-2 mt-auto">
+                <Link to={`/products/${product.id}`} className="w-full md:flex-1">
+                  <Button variant="outline" className="w-full card-button" data-testid={`view-details-${product.id}`}>
+                    <Eye className="h-4 w-4 mr-2 flex-shrink-0" />
+                    <span className="whitespace-nowrap overflow-hidden text-ellipsis">View Details</span>
                   </Button>
                 </Link>
                 
                 <Button
                   onClick={() => handleAddToCart(product)}
                   disabled={!product.inStock}
-                  className="flex-1"
+                  className="w-full md:flex-1 card-button"
                   data-testid={`add-to-cart-${product.id}`}
+                  data-component-name="Card"
                 >
-                  <ShoppingCart className="h-4 w-4 mr-2" />
-                  Add to Cart
+                  <ShoppingCart className="h-4 w-4 mr-2 flex-shrink-0" />
+                  <span className="whitespace-nowrap overflow-hidden text-ellipsis">Add to Cart</span>
                 </Button>
               </CardFooter>
             </Card>
