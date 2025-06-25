@@ -32,7 +32,7 @@ const SpecialProductContent: React.FC<SpecialProductContentProps> = ({ product }
       shadowRoot.innerHTML = `
         <style>
           .shadow-content {
-            padding: 20px;
+            padding: 15px;
             background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
             border-radius: 8px;

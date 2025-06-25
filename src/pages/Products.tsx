@@ -12,9 +12,11 @@ import { products, categories, Product } from '@/data/products';
 import { Star, ShoppingCart, Eye } from 'lucide-react';
 
 const Products = () => {
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
+  // Sort products by ID initially
+  const initialSortedProducts = [...products].sort((a, b) => parseInt(a.id) - parseInt(b.id));
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(initialSortedProducts);
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('name');
+  const [sortBy, setSortBy] = useState('id');
   const [filterCategory, setFilterCategory] = useState('all');
   const { addToCart } = useCart();
 
@@ -44,8 +46,11 @@ const Products = () => {
         case 'rating':
           return b.rating - a.rating;
         case 'name':
-        default:
           return a.name.localeCompare(b.name);
+        case 'id':
+          return parseInt(a.id) - parseInt(b.id);
+        default:
+          return parseInt(a.id) - parseInt(b.id); // Default to ID-based sorting
       }
     });
 
@@ -100,6 +105,7 @@ const Products = () => {
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value="id" data-testid="sort-id">Default Order (ID)</SelectItem>
                 <SelectItem value="name" data-testid="sort-name">Name (A-Z)</SelectItem>
                 <SelectItem value="price-low" data-testid="sort-price-low">Price (Low to High)</SelectItem>
                 <SelectItem value="price-high" data-testid="sort-price-high">Price (High to Low)</SelectItem>
