@@ -1,0 +1,130 @@
+
+import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { useAuth } from '@/contexts/AuthContext';
+import { useCart } from '@/contexts/CartContext';
+import { ShoppingCart, User, LogOut, Search, Home } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+
+interface HeaderProps {
+  onSearch?: (query: string) => void;
+  searchQuery?: string;
+}
+
+const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery = '' }) => {
+  const { user, logout, isAuthenticated } = useAuth();
+  const { totalItems } = useCart();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
+  const clearAppData = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
+
+  return (
+    <header className="bg-white shadow-sm border-b" data-testid="main-header">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center space-x-4">
+            <Link to="/" className="flex items-center space-x-2" data-testid="home-link">
+              <Home className="h-6 w-6 text-primary" />
+              <span className="text-xl font-bold text-primary">TestMart</span>
+            </Link>
+            
+            <nav className="hidden md:flex space-x-4">
+              <Link 
+                to="/products" 
+                className="text-gray-600 hover:text-primary transition-colors"
+                data-testid="products-nav-link"
+              >
+                Products
+              </Link>
+              {isAuthenticated && (
+                <Link 
+                  to="/dashboard" 
+                  className="text-gray-600 hover:text-primary transition-colors"
+                  data-testid="dashboard-nav-link"
+                >
+                  Dashboard
+                </Link>
+              )}
+            </nav>
+          </div>
+
+          {onSearch && (
+            <div className="flex-1 max-w-md mx-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => onSearch(e.target.value)}
+                  className="pl-10"
+                  data-testid="search-input"
+                />
+              </div>
+            </div>
+          )}
+
+          <div className="flex items-center space-x-4">
+            <Link to="/cart" className="relative" data-testid="cart-link">
+              <Button variant="ghost" size="sm" className="relative">
+                <ShoppingCart className="h-5 w-5" />
+                {totalItems > 0 && (
+                  <Badge 
+                    className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center"
+                    data-testid="cart-badge"
+                  >
+                    {totalItems}
+                  </Badge>
+                )}
+              </Button>
+            </Link>
+
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-gray-600" data-testid="user-welcome">
+                  Welcome, {user?.name}
+                </span>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleLogout}
+                  data-testid="logout-button"
+                >
+                  <LogOut className="h-4 w-4" />
+                </Button>
+              </div>
+            ) : (
+              <Link to="/login">
+                <Button variant="outline" size="sm" data-testid="login-button">
+                  <User className="h-4 w-4 mr-2" />
+                  Login
+                </Button>
+              </Link>
+            )}
+
+            <Button 
+              variant="destructive" 
+              size="sm" 
+              onClick={clearAppData}
+              data-testid="clear-data-button"
+              className="hidden md:block"
+            >
+              Clear App Data
+            </Button>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;
