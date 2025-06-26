@@ -5,7 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useComparison } from '@/contexts/ComparisonContext';
-import { ShoppingCart, User, LogOut, Search, Home, TestTube, Heart, GitCompare } from 'lucide-react';
+import { ShoppingCart, User, LogOut, Search, Home, TestTube, Heart, GitCompare, ExternalLink, Globe } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import ThemeToggle from './ThemeToggle';
 
@@ -74,6 +74,20 @@ const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery = '' }) => {
                   Dashboard
                 </Link>
               )}
+              
+              {/* TestingMaster.in Link */}
+              <a 
+                href="https://testingmaster.in" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors py-1 rounded-md hover:from-blue-600 hover:to-purple-700 transition-all flex items-center text-sm font-medium"
+                data-testid="testingmaster-link"
+                title="Visit TestingMaster.in - Learn Testing & Automation"
+              >
+                <Globe className="h-4 w-4 mr-1" />
+                TestingMaster.in
+                <ExternalLink className="h-3 w-3 ml-1" />
+              </a>
             </nav>
           </div>
 
@@ -95,6 +109,18 @@ const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery = '' }) => {
 
           <div className="flex items-center space-x-4">
             <ThemeToggle />
+            
+            {/* Mobile TestingMaster.in Link */}
+            <a 
+              href="https://testingmaster.in" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="md:hidden bg-gradient-to-r from-blue-500 to-purple-600 text-white p-2 rounded-md hover:from-blue-600 hover:to-purple-700 transition-all"
+              data-testid="testingmaster-mobile-link"
+              title="Visit TestingMaster.in"
+            >
+              <Globe className="h-4 w-4" />
+            </a>
             
             <Button 
               variant="ghost" 

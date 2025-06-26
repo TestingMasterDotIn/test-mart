@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Header from '@/components/Header';
-import { CheckCircle, XCircle, AlertTriangle, User, ShoppingCart, CreditCard, Package, Monitor, Heart, GitCompare, MessageCircle, Code } from 'lucide-react';
+import { CheckCircle, XCircle, AlertTriangle, User, ShoppingCart, CreditCard, Package, Monitor, Heart, GitCompare, MessageCircle, Code, Globe, ExternalLink } from 'lucide-react';
 import { useState } from 'react';
 
 interface TestCase {
@@ -1494,6 +1494,30 @@ test.describe('${testCase.id} - ${testCase.title}', () => {
           </DialogContent>
         </Dialog>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 py-6 mt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center space-y-3">
+            <div className="flex justify-center items-center space-x-2 text-sm">
+              <span className="text-gray-600 dark:text-gray-400">
+                Learn more testing at
+              </span>
+              <a
+                href="https://testingmaster.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-1 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
+                data-testid="footer-testingmaster-link"
+              >
+                <Globe className="h-4 w-4" />
+                <span>TestingMaster.in</span>
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
