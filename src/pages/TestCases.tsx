@@ -1,10 +1,382 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import Header from '@/components/Header';
-import { CheckCircle, XCircle, AlertTriangle, User, ShoppingCart, CreditCard, Package, Monitor, Heart, GitCompare, MessageCircle } from 'lucide-react';
+import { CheckCircle, XCircle, AlertTriangle, User, ShoppingCart, CreditCard, Package, Monitor, Heart, GitCompare, MessageCircle, Code } from 'lucide-react';
+import { useState } from 'react';
+
+interface TestCase {
+  id: string;
+  type: 'positive' | 'negative' | 'edge';
+  title: string;
+  steps: string[];
+  expected: string;
+  testData: string;
+}
 
 const TestCases = () => {
+  const [selectedTestCase, setSelectedTestCase] = useState<TestCase | null>(null);
+  const [isAutomationModalOpen, setIsAutomationModalOpen] = useState(false);
+
+  const generateSeleniumCode = (testCase: TestCase) => {
+    const baseCode = `import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+
+public class ${testCase.id.replace(/_/g, '')}Test {
+    private WebDriver driver;
+    private WebDriverWait wait;
+    
+    @BeforeEach
+    void setUp() {
+        driver = new ChromeDriver();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        driver.get("https://test-mart.testingmaster.in");
+    }
+    
+    @Test
+    void test${testCase.id.replace(/_/g, '')}() {
+        // ${testCase.title}`;
+
+    // Add specific code based on test case type
+    if (testCase.id.startsWith('AUTH_')) {
+      return baseCode + `
+        
+        // Navigate to login page
+        driver.get("https://test-mart.testingmaster.in/login");
+        
+        // Find and fill email field
+        WebElement emailField = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[data-testid='email-input']")));
+        emailField.clear();
+        emailField.sendKeys("${testCase.testData.split(' / ')[0] || 'test@example.com'}");
+        
+        // Find and fill password field
+        WebElement passwordField = driver.findElement(By.cssSelector("[data-testid='password-input']"));
+        passwordField.clear();
+        passwordField.sendKeys("${testCase.testData.split(' / ')[1] || 'password123'}");
+        
+        // Click login button
+        WebElement loginButton = driver.findElement(By.cssSelector("[data-testid='login-submit-button']"));
+        loginButton.click();
+        
+        // Verify expected result
+        // ${testCase.expected}
+        ${testCase.type === 'positive' ? 
+          'WebElement dashboard = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-testid*=dashboard]")));' :
+          'WebElement errorMessage = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".error, .toast")));'
+        }
+    }
+    
+    @AfterEach
+    void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+}`;
+    } else if (testCase.id.startsWith('PROD_')) {
+      return baseCode + `
+        
+        // Navigate to products page
+        driver.get("https://test-mart.testingmaster.in/products");
+        
+        // Wait for products to load
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-testid='product-grid']")));
+        
+        ${testCase.id.includes('Search') ? `
+        // Perform search
+        WebElement searchInput = driver.findElement(By.cssSelector("[data-testid='search-input']"));
+        searchInput.clear();
+        searchInput.sendKeys("${testCase.testData.includes('Search:') ? testCase.testData.split('Search: ')[1].replace(/"/g, '') : 'laptop'}");
+        ` : ''}
+        
+        ${testCase.id.includes('Filter') ? `
+        // Apply filter
+        WebElement categoryFilter = driver.findElement(By.cssSelector("[data-testid='category-filter']"));
+        categoryFilter.click();
+        ` : ''}
+        
+        // Verify expected result
+        // ${testCase.expected}
+        WebElement productContainer = driver.findElement(By.cssSelector("[data-testid='product-grid']"));
+        assert(productContainer.isDisplayed());
+    }
+    
+    @AfterEach
+    void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+}`;
+    } else if (testCase.id.startsWith('CART_')) {
+      return baseCode + `
+        
+        // Navigate to products page and add item to cart
+        driver.get("https://test-mart.testingmaster.in/products");
+        
+        // Wait for products and click add to cart
+        WebElement addToCartButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[data-testid='add-to-cart-1']")));
+        addToCartButton.click();
+        
+        // Navigate to cart
+        driver.get("https://test-mart.testingmaster.in/cart");
+        
+        // Verify cart contents
+        WebElement cartItem = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-testid='cart-item']")));
+        
+        // ${testCase.expected}
+    }
+    
+    @AfterEach
+    void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+}`;
+    } else if (testCase.id.startsWith('SPECIAL_')) {
+      return baseCode + `
+        
+        // Navigate to products page
+        driver.get("https://test-mart.testingmaster.in/products");
+        
+        // Find special product
+        WebElement specialProduct = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-testid*='${testCase.testData.split('-')[0]}']")));
+        
+        ${testCase.id.includes('Alert') ? `
+        // Handle alert dialogs
+        specialProduct.click();
+        Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+        String alertText = alert.getText();
+        alert.accept();
+        ` : ''}
+        
+        ${testCase.id.includes('Modal') ? `
+        // Handle modal dialogs
+        specialProduct.click();
+        WebElement modal = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("[data-testid*='modal']")));
+        ` : ''}
+        
+        // Verify expected result: ${testCase.expected}
+    }
+    
+    @AfterEach
+    void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+}`;
+    }
+
+    return baseCode + `
+        
+        // Add test implementation here based on: ${testCase.title}
+        // Expected: ${testCase.expected}
+        // Test Data: ${testCase.testData}
+    }
+    
+    @AfterEach
+    void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+}`;
+  };
+
+  const generatePlaywrightCode = (testCase: TestCase) => {
+    const baseCode = `import { test, expect, Page } from '@playwright/test';
+
+test.describe('${testCase.id} - ${testCase.title}', () => {
+  test('${testCase.title.toLowerCase().replace(/\s+/g, '_')}', async ({ page }) => {
+    // ${testCase.title}
+    await page.goto('https://test-mart.testingmaster.in');`;
+
+    // Add specific code based on test case type
+    if (testCase.id.startsWith('AUTH_')) {
+      return baseCode + `
+    
+    // Navigate to login page
+    await page.goto('https://test-mart.testingmaster.in/login');
+    
+    // Fill login form
+    await page.fill('[data-testid="email-input"]', '${testCase.testData.split(' / ')[0] || 'test@example.com'}');
+    await page.fill('[data-testid="password-input"]', '${testCase.testData.split(' / ')[1] || 'password123'}');
+    
+    // Click login button
+    await page.click('[data-testid="login-submit-button"]');
+    
+    // Verify expected result
+    ${testCase.type === 'positive' ? 
+      `await expect(page).toHaveURL(/.*dashboard.*/);` :
+      `await expect(page.locator('.error, .toast')).toBeVisible();`
+    }
+    
+    // ${testCase.expected}
+  });
+});`;
+    } else if (testCase.id.startsWith('PROD_')) {
+      return baseCode + `
+    
+    // Navigate to products page
+    await page.goto('https://test-mart.testingmaster.in/products');
+    
+    // Wait for products grid to load
+    await expect(page.locator('[data-testid="product-grid"]')).toBeVisible();
+    
+    ${testCase.id.includes('Search') ? `
+    // Perform search
+    await page.fill('[data-testid="search-input"]', '${testCase.testData.includes('Search:') ? testCase.testData.split('Search: ')[1].replace(/"/g, '') : 'laptop'}');
+    await page.keyboard.press('Enter');
+    ` : ''}
+    
+    ${testCase.id.includes('Filter') ? `
+    // Apply category filter
+    await page.selectOption('[data-testid="category-filter"]', 'Electronics');
+    ` : ''}
+    
+    // Verify expected result: ${testCase.expected}
+    await expect(page.locator('[data-testid="product-grid"]')).toBeVisible();
+  });
+});`;
+    } else if (testCase.id.startsWith('CART_')) {
+      return baseCode + `
+    
+    // Navigate to products and add item to cart
+    await page.goto('https://test-mart.testingmaster.in/products');
+    
+    // Add first available product to cart
+    await page.click('[data-testid="add-to-cart-1"]');
+    
+    // Verify toast notification
+    await expect(page.locator('.toast')).toBeVisible();
+    
+    // Navigate to cart
+    await page.goto('https://test-mart.testingmaster.in/cart');
+    
+    // Verify cart contents
+    await expect(page.locator('[data-testid="cart-item"]')).toBeVisible();
+    
+    // ${testCase.expected}
+  });
+});`;
+    } else if (testCase.id.startsWith('SPECIAL_')) {
+      return baseCode + `
+    
+    // Navigate to products page
+    await page.goto('https://test-mart.testingmaster.in/products');
+    
+    // Find and interact with special product
+    const specialProduct = page.locator('[data-testid*="${testCase.testData.split('-')[0]}"]');
+    await expect(specialProduct).toBeVisible();
+    
+    ${testCase.id.includes('Alert') ? `
+    // Handle alert dialogs
+    page.on('dialog', async dialog => {
+      expect(dialog.message()).toContain('Alert');
+      await dialog.accept();
+    });
+    await specialProduct.click();
+    ` : ''}
+    
+    ${testCase.id.includes('Modal') ? `
+    // Handle modal dialogs
+    await specialProduct.click();
+    await expect(page.locator('[data-testid*="modal"]')).toBeVisible();
+    ` : ''}
+    
+    // Verify expected result: ${testCase.expected}
+  });
+});`;
+    } else if (testCase.id.startsWith('WISH_')) {
+      return baseCode + `
+    
+    // Navigate to products page
+    await page.goto('https://test-mart.testingmaster.in/products');
+    
+    // Add product to wishlist
+    await page.click('[data-testid="toggle-wishlist-1"]');
+    
+    // Verify wishlist counter updates
+    await expect(page.locator('[data-testid="wishlist-counter"]')).toContainText('1');
+    
+    // Navigate to wishlist page
+    await page.goto('https://test-mart.testingmaster.in/wishlist');
+    
+    // Verify product appears in wishlist
+    await expect(page.locator('[data-testid="wishlist-item"]')).toBeVisible();
+    
+    // ${testCase.expected}
+  });
+});`;
+    } else if (testCase.id.startsWith('COMP_')) {
+      return baseCode + `
+    
+    // Navigate to products page
+    await page.goto('https://test-mart.testingmaster.in/products');
+    
+    // Add product to comparison
+    await page.click('[data-testid="add-to-compare-1"]');
+    
+    // Verify compare counter updates
+    await expect(page.locator('[data-testid="compare-counter"]')).toContainText('1');
+    
+    // Navigate to comparison page
+    await page.goto('https://test-mart.testingmaster.in/compare');
+    
+    // Verify product appears in comparison
+    await expect(page.locator('[data-testid="compare-item"]')).toBeVisible();
+    
+    // ${testCase.expected}
+  });
+});`;
+    } else if (testCase.id.startsWith('CHAT_')) {
+      return baseCode + `
+    
+    // Open chat widget
+    await page.click('[data-testid="chat-button"]');
+    
+    // Verify chat window opens
+    await expect(page.locator('[data-testid="chat-window"]')).toBeVisible();
+    
+    // Send a message
+    await page.fill('[data-testid="chat-input"]', 'Hello TestMartBot!');
+    await page.click('[data-testid="chat-send"]');
+    
+    // Wait for bot response
+    await expect(page.locator('[data-testid="bot-message"]')).toBeVisible();
+    
+    // ${testCase.expected}
+  });
+});`;
+    }
+
+    return baseCode + `
+    
+    // Add test implementation here based on: ${testCase.title}
+    // Expected: ${testCase.expected}
+    // Test Data: ${testCase.testData}
+    
+    // Add assertions based on expected results
+    await expect(page).toHaveTitle(/TestMart/);
+  });
+});`;
+  };
+
+  const openAutomationModal = (testCase: TestCase) => {
+    setSelectedTestCase(testCase);
+    setIsAutomationModalOpen(true);
+  };
   const testScenarios = {
     authentication: [
       {
@@ -984,7 +1356,7 @@ const TestCases = () => {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <div className="grid md:grid-cols-2 gap-4">
+                      <div className="grid md:grid-cols-2 gap-4 mb-4">
                         <div>
                           <h4 className="font-semibold mb-2 dark:text-white">Test Steps:</h4>
                           <ol className="list-decimal list-inside space-y-1 text-sm dark:text-gray-300">
@@ -1001,6 +1373,18 @@ const TestCases = () => {
                             {scenario.expected}
                           </p>
                         </div>
+                      </div>
+                      <div className="flex justify-end">
+                        <Button
+                          onClick={() => openAutomationModal(scenario as TestCase)}
+                          variant="outline"
+                          size="sm"
+                          className="flex items-center gap-2"
+                          data-testid={`automation-code-${scenario.id}`}
+                        >
+                          <Code className="h-4 w-4" />
+                          Automation Code
+                        </Button>
                       </div>
                     </CardContent>
                   </Card>
@@ -1050,6 +1434,65 @@ const TestCases = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Automation Code Modal */}
+        <Dialog open={isAutomationModalOpen} onOpenChange={setIsAutomationModalOpen}>
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-auto">
+            <DialogHeader>
+              <DialogTitle>
+                Automation Code - {selectedTestCase?.id}: {selectedTestCase?.title}
+              </DialogTitle>
+              <DialogDescription>
+                Copy the automation code snippets below for Selenium Java or Playwright TypeScript
+              </DialogDescription>
+            </DialogHeader>
+            
+            {selectedTestCase && (
+              <Tabs defaultValue="selenium" className="mt-4">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="selenium">Selenium Java</TabsTrigger>
+                  <TabsTrigger value="playwright">Playwright TypeScript</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="selenium" className="mt-4">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-semibold">Selenium WebDriver (Java)</h4>
+                      <Button
+                        onClick={() => navigator.clipboard.writeText(generateSeleniumCode(selectedTestCase))}
+                        size="sm"
+                        variant="outline"
+                      >
+                        Copy Code
+                      </Button>
+                    </div>
+                    <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto text-sm">
+                      <code>{generateSeleniumCode(selectedTestCase)}</code>
+                    </pre>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="playwright" className="mt-4">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-semibold">Playwright (TypeScript)</h4>
+                      <Button
+                        onClick={() => navigator.clipboard.writeText(generatePlaywrightCode(selectedTestCase))}
+                        size="sm"
+                        variant="outline"
+                      >
+                        Copy Code
+                      </Button>
+                    </div>
+                    <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto text-sm">
+                      <code>{generatePlaywrightCode(selectedTestCase)}</code>
+                    </pre>
+                  </div>
+                </TabsContent>
+              </Tabs>
+            )}
+          </DialogContent>
+        </Dialog>
       </main>
     </div>
   );
