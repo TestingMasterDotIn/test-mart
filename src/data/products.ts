@@ -9,7 +9,7 @@ export interface Product {
   description: string;
   inStock: boolean;
   isSpecial?: boolean;
-  specialType?: 'iframe' | 'shadowdom';
+  specialType?: 'iframe' | 'shadowdom' | 'instant-alert' | 'timed-popup' | 'confirm-dialog' | 'modal-popup';
 }
 
 export const products: Product[] = [
@@ -156,6 +156,54 @@ export const products: Product[] = [
     inStock: true,
     isSpecial: true,
     specialType: 'shadowdom'
+  },
+  {
+    id: '15',
+    name: 'Instant Alert Widget',
+    price: 199.99,
+    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400',
+    rating: 4.5,
+    category: 'Electronics',
+    description: 'Testing widget that triggers immediate browser alerts on interaction.',
+    inStock: true,
+    isSpecial: true,
+    specialType: 'instant-alert'
+  },
+  {
+    id: '16',
+    name: 'Timed Popup Display',
+    price: 249.99,
+    image: 'https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400',
+    rating: 4.3,
+    category: 'Electronics',
+    description: 'Automated testing component with timed popups (3, 5, and 10 second delays).',
+    inStock: true,
+    isSpecial: true,
+    specialType: 'timed-popup'
+  },
+  {
+    id: '17',
+    name: 'Confirmation Dialog Tester',
+    price: 179.99,
+    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400',
+    rating: 4.6,
+    category: 'Electronics',
+    description: 'Interactive component requiring user confirmation dialogs for testing automation.',
+    inStock: true,
+    isSpecial: true,
+    specialType: 'confirm-dialog'
+  },
+  {
+    id: '18',
+    name: 'Modal Popup System',
+    price: 329.99,
+    image: 'https://images.unsplash.com/photo-1607798748738-b15c40d33d57?w=400',
+    rating: 4.7,
+    category: 'Electronics',
+    description: 'Complex modal system with multiple layers and user interaction requirements.',
+    inStock: true,
+    isSpecial: true,
+    specialType: 'modal-popup'
   }
 ];
 

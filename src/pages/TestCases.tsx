@@ -288,6 +288,97 @@ const TestCases = () => {
         ],
         expected: 'Special content should have proper accessibility attributes and fallbacks',
         testData: 'Accessibility testing'
+      },
+      {
+        id: 'SPECIAL_009',
+        type: 'positive',
+        title: 'Instant Alert Product Interaction',
+        steps: [
+          'Navigate to /products',
+          'Find "Instant Alert Widget" product (ID: 15)',
+          'Click "Trigger Instant Alert" button',
+          'Handle browser alert dialog'
+        ],
+        expected: 'Immediate alert dialog appears with message "Instant Alert triggered!"',
+        testData: 'instant-alert-15'
+      },
+      {
+        id: 'SPECIAL_010',
+        type: 'positive',
+        title: 'Timed Popup Testing',
+        steps: [
+          'Navigate to /products',
+          'Find "Timed Popup Display" product (ID: 16)',
+          'Click "Start Timed Popups" button',
+          'Wait and handle 3 sequential alerts at 3s, 5s, 10s'
+        ],
+        expected: 'Three alerts appear in sequence: after 3, 5, and 10 seconds',
+        testData: 'timed-popup-16'
+      },
+      {
+        id: 'SPECIAL_011',
+        type: 'positive',
+        title: 'Confirmation Dialog Handling',
+        steps: [
+          'Navigate to /products',
+          'Find "Confirmation Dialog Tester" product (ID: 17)',
+          'Click "Show Confirmation Dialog" button',
+          'Test both OK and Cancel options'
+        ],
+        expected: 'Confirm dialog appears, different alerts shown based on user choice',
+        testData: 'confirm-dialog-17'
+      },
+      {
+        id: 'SPECIAL_012',
+        type: 'positive',
+        title: 'Modal Popup System Testing',
+        steps: [
+          'Navigate to /products',
+          'Find "Modal Popup System" product (ID: 18)',
+          'Click "Open Modal System" button',
+          'Test Action 1, Action 2, and Close buttons'
+        ],
+        expected: 'Modal opens with multiple interactive elements, each button triggers appropriate action',
+        testData: 'modal-trigger-18, modal-action1-18, modal-action2-18'
+      },
+      {
+        id: 'SPECIAL_013',
+        type: 'edge',
+        title: 'Multiple Alert Handling',
+        steps: [
+          'Navigate to /products',
+          'Trigger instant alert and timed popups simultaneously',
+          'Handle overlapping alert dialogs',
+          'Verify automation can handle multiple alerts'
+        ],
+        expected: 'All alerts handled properly without blocking automation',
+        testData: 'Multiple concurrent alerts'
+      },
+      {
+        id: 'SPECIAL_014',
+        type: 'negative',
+        title: 'Alert Dialog Dismissal Testing',
+        steps: [
+          'Trigger various alert types',
+          'Test ESC key dismissal',
+          'Test clicking outside modal areas',
+          'Verify proper cleanup'
+        ],
+        expected: 'All dialogs can be properly dismissed, no memory leaks or stuck states',
+        testData: 'Dialog dismissal testing'
+      },
+      {
+        id: 'SPECIAL_015',
+        type: 'edge',
+        title: 'Alert Performance Under Load',
+        steps: [
+          'Open multiple tabs with popup products',
+          'Trigger multiple alerts simultaneously',
+          'Monitor browser performance',
+          'Verify no browser crashes'
+        ],
+        expected: 'Browser handles multiple alerts gracefully, performance remains stable',
+        testData: 'Performance stress testing'
       }
     ],
     cart: [
@@ -951,6 +1042,10 @@ const TestCases = () => {
               <div className="space-y-2 text-sm dark:text-gray-300">
                 <div><strong>ID 13:</strong> Interactive iframe Widget (iframe content)</div>
                 <div><strong>ID 14:</strong> Shadow DOM Component (shadow DOM content)</div>
+                <div><strong>ID 15:</strong> Instant Alert Widget (immediate browser alerts)</div>
+                <div><strong>ID 16:</strong> Timed Popup Display (3s, 5s, 10s delayed alerts)</div>
+                <div><strong>ID 17:</strong> Confirmation Dialog Tester (confirm/cancel dialogs)</div>
+                <div><strong>ID 18:</strong> Modal Popup System (complex modal interactions)</div>
               </div>
             </div>
           </CardContent>
