@@ -6,13 +6,15 @@ import { Badge } from '@/components/ui/badge';
 import Header from '@/components/Header';
 import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
+import { useComparison } from '@/contexts/ComparisonContext';
 import { products } from '@/data/products';
-import { Star, ShoppingCart, ArrowLeft, Heart } from 'lucide-react';
+import { Star, ShoppingCart, ArrowLeft, Heart, GitCompare } from 'lucide-react';
 
 const ProductDetails = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const { addToCompare, isInCompare } = useComparison();
   
   const product = products.find(p => p.id === id);
 
@@ -124,8 +126,21 @@ const ProductDetails = () => {
                   size="lg"
                   className={`px-4 ${isInWishlist(product.id) ? 'text-red-500 border-red-500' : ''}`}
                   data-testid="toggle-wishlist-detail"
+                  title="Add to Wishlist"
                 >
                   <Heart className={`h-5 w-5 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => addToCompare(product)}
+                  size="lg"
+                  className={`px-4 ${isInCompare(product.id) ? 'text-blue-500 border-blue-500' : ''}`}
+                  disabled={isInCompare(product.id)}
+                  data-testid="add-to-compare-detail"
+                  title="Add to Compare"
+                >
+                  <GitCompare className={`h-5 w-5 ${isInCompare(product.id) ? 'fill-current' : ''}`} />
                 </Button>
               </div>
             </div>

@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Header from '@/components/Header';
-import { CheckCircle, XCircle, AlertTriangle, User, ShoppingCart, CreditCard, Package, Monitor } from 'lucide-react';
+import { CheckCircle, XCircle, AlertTriangle, User, ShoppingCart, CreditCard, Package, Monitor, Heart, GitCompare, MessageCircle } from 'lucide-react';
 
 const TestCases = () => {
   const testScenarios = {
@@ -432,6 +432,369 @@ const TestCases = () => {
         expected: '50% discount applied correctly, final total calculated',
         testData: 'Coupon: TEST50'
       }
+    ],
+    wishlist: [
+      {
+        id: 'WISH_001',
+        type: 'positive',
+        title: 'Add Product to Wishlist from Products Page',
+        steps: [
+          'Navigate to /products',
+          'Click heart icon on any product card',
+          'Verify product added to wishlist'
+        ],
+        expected: 'Heart icon fills with red color, success toast shown, wishlist counter updates',
+        testData: 'Any available product'
+      },
+      {
+        id: 'WISH_002',
+        type: 'positive',
+        title: 'Add Product to Wishlist from Product Details',
+        steps: [
+          'Navigate to /products/{id}',
+          'Click wishlist heart button',
+          'Verify product added to wishlist'
+        ],
+        expected: 'Heart button shows red color, success toast shown, product saved',
+        testData: 'Any product ID'
+      },
+      {
+        id: 'WISH_003',
+        type: 'positive',
+        title: 'Remove Product from Wishlist',
+        steps: [
+          'Add product to wishlist first',
+          'Click heart icon again to remove',
+          'Verify product removed from wishlist'
+        ],
+        expected: 'Heart icon returns to normal color, removal toast shown, counter updates',
+        testData: 'Product in wishlist'
+      },
+      {
+        id: 'WISH_004',
+        type: 'positive',
+        title: 'View Wishlist Page',
+        steps: [
+          'Add multiple products to wishlist',
+          'Navigate to /wishlist',
+          'Verify all products displayed'
+        ],
+        expected: 'All wishlist products shown with details, add to cart options available',
+        testData: 'Multiple products in wishlist'
+      },
+      {
+        id: 'WISH_005',
+        type: 'positive',
+        title: 'Add to Cart from Wishlist',
+        steps: [
+          'Navigate to /wishlist',
+          'Click "Add to Cart" on wishlist item',
+          'Verify item added to cart'
+        ],
+        expected: 'Product added to cart, success toast shown, cart counter updates',
+        testData: 'Product in wishlist'
+      },
+      {
+        id: 'WISH_006',
+        type: 'positive',
+        title: 'Clear All Wishlist Items',
+        steps: [
+          'Add multiple products to wishlist',
+          'Navigate to /wishlist',
+          'Click "Clear All" button',
+          'Confirm action'
+        ],
+        expected: 'All items removed from wishlist, empty state shown',
+        testData: 'Multiple products in wishlist'
+      },
+      {
+        id: 'WISH_007',
+        type: 'positive',
+        title: 'Wishlist Persistence',
+        steps: [
+          'Add products to wishlist',
+          'Refresh page',
+          'Navigate to /wishlist',
+          'Verify items still present'
+        ],
+        expected: 'Wishlist items persist across page refreshes',
+        testData: 'Multiple products'
+      },
+      {
+        id: 'WISH_008',
+        type: 'edge',
+        title: 'Empty Wishlist State',
+        steps: [
+          'Ensure wishlist is empty',
+          'Navigate to /wishlist',
+          'Verify empty state message'
+        ],
+        expected: 'Empty wishlist message and "Continue Shopping" button shown',
+        testData: 'Empty wishlist'
+      },
+      {
+        id: 'WISH_009',
+        type: 'negative',
+        title: 'Duplicate Wishlist Addition',
+        steps: [
+          'Add product to wishlist',
+          'Try to add same product again',
+          'Verify duplicate prevention'
+        ],
+        expected: 'Error toast: "Already in wishlist", no duplicate added',
+        testData: 'Product already in wishlist'
+      }
+    ],
+    compare: [
+      {
+        id: 'COMP_001',
+        type: 'positive',
+        title: 'Add Product to Compare from Products Page',
+        steps: [
+          'Navigate to /products',
+          'Click compare icon (GitCompare) on product card',
+          'Verify product added to comparison'
+        ],
+        expected: 'Compare icon shows blue color, success toast shown, compare counter updates in header',
+        testData: 'Any available product'
+      },
+      {
+        id: 'COMP_002',
+        type: 'positive',
+        title: 'Add Product to Compare from Product Details',
+        steps: [
+          'Navigate to /products/{id}',
+          'Click compare button',
+          'Verify product added to comparison'
+        ],
+        expected: 'Compare button shows blue color, success toast shown, product saved',
+        testData: 'Any product ID'
+      },
+      {
+        id: 'COMP_003',
+        type: 'positive',
+        title: 'View Product Comparison Page',
+        steps: [
+          'Add 2-4 products to compare',
+          'Navigate to /compare',
+          'Verify side-by-side comparison'
+        ],
+        expected: 'Products displayed in comparison grid with features, prices, ratings',
+        testData: 'Multiple products in compare list'
+      },
+      {
+        id: 'COMP_004',
+        type: 'positive',
+        title: 'Remove Product from Comparison',
+        steps: [
+          'Navigate to /compare with products',
+          'Click X button on product card',
+          'Verify product removed'
+        ],
+        expected: 'Product removed from comparison, success toast shown',
+        testData: 'Products in comparison'
+      },
+      {
+        id: 'COMP_005',
+        type: 'positive',
+        title: 'Add to Cart from Comparison',
+        steps: [
+          'Navigate to /compare',
+          'Click "Add to Cart" on compared product',
+          'Verify item added to cart'
+        ],
+        expected: 'Product added to cart, success toast shown, cart counter updates',
+        testData: 'Products in comparison'
+      },
+      {
+        id: 'COMP_006',
+        type: 'positive',
+        title: 'Clear All Comparison Items',
+        steps: [
+          'Add multiple products to compare',
+          'Navigate to /compare',
+          'Click "Clear All" button'
+        ],
+        expected: 'All items removed from comparison, empty state shown',
+        testData: 'Multiple products in comparison'
+      },
+      {
+        id: 'COMP_007',
+        type: 'negative',
+        title: 'Compare Limit Exceeded',
+        steps: [
+          'Add 4 products to compare list',
+          'Try to add 5th product',
+          'Verify limit enforcement'
+        ],
+        expected: 'Error toast: "Comparison Limit Reached", no 5th product added',
+        testData: '4 products already in comparison'
+      },
+      {
+        id: 'COMP_008',
+        type: 'negative',
+        title: 'Duplicate Compare Addition',
+        steps: [
+          'Add product to compare list',
+          'Try to add same product again',
+          'Verify duplicate prevention'
+        ],
+        expected: 'Error toast: "Already in comparison", button disabled',
+        testData: 'Product already in comparison'
+      },
+      {
+        id: 'COMP_009',
+        type: 'edge',
+        title: 'Empty Compare State',
+        steps: [
+          'Ensure comparison list is empty',
+          'Navigate to /compare',
+          'Verify empty state message'
+        ],
+        expected: 'Empty comparison message and "Browse Products" button shown',
+        testData: 'Empty comparison list'
+      },
+      {
+        id: 'COMP_010',
+        type: 'positive',
+        title: 'Compare Feature Comparison',
+        steps: [
+          'Add products from different categories',
+          'Navigate to /compare',
+          'Verify feature differences highlighted'
+        ],
+        expected: 'Price, category, rating, stock status clearly compared',
+        testData: 'Products from different categories'
+      }
+    ],
+    chatbot: [
+      {
+        id: 'CHAT_001',
+        type: 'positive',
+        title: 'Open Chat Support Widget',
+        steps: [
+          'Navigate to any page',
+          'Click floating chat button (bottom right)',
+          'Verify chat window opens'
+        ],
+        expected: 'Chat window opens with welcome message, online status indicator shown',
+        testData: 'Any page'
+      },
+      {
+        id: 'CHAT_002',
+        type: 'positive',
+        title: 'Send Message to TestMartBot',
+        steps: [
+          'Open chat widget',
+          'Type message in input field',
+          'Click send button or press Enter',
+          'Verify message sent and bot response'
+        ],
+        expected: 'User message appears, typing indicator shown, bot responds within 3 seconds',
+        testData: 'Any text message'
+      },
+      {
+        id: 'CHAT_003',
+        type: 'positive',
+        title: 'Chat Window Minimize/Maximize',
+        steps: [
+          'Open chat widget',
+          'Click minimize button',
+          'Verify window minimized',
+          'Click maximize button'
+        ],
+        expected: 'Chat window minimizes to header only, then expands back to full view',
+        testData: 'Chat window open'
+      },
+      {
+        id: 'CHAT_004',
+        type: 'positive',
+        title: 'Close Chat Window',
+        steps: [
+          'Open chat widget',
+          'Click X button to close',
+          'Verify chat closes',
+          'Verify floating button returns'
+        ],
+        expected: 'Chat window closes, floating chat button visible again',
+        testData: 'Chat window open'
+      },
+      {
+        id: 'CHAT_005',
+        type: 'positive',
+        title: 'Chat Message History',
+        steps: [
+          'Open chat widget',
+          'Send multiple messages',
+          'Verify message history preserved',
+          'Close and reopen chat'
+        ],
+        expected: 'All messages remain visible, timestamps shown, scroll to latest message',
+        testData: 'Multiple chat messages'
+      },
+      {
+        id: 'CHAT_006',
+        type: 'positive',
+        title: 'Bot Typing Indicator',
+        steps: [
+          'Open chat widget',
+          'Send a message',
+          'Observe typing indicator',
+          'Wait for bot response'
+        ],
+        expected: 'Typing indicator with animated dots appears, then bot message shows',
+        testData: 'Any message'
+      },
+      {
+        id: 'CHAT_007',
+        type: 'positive',
+        title: 'Authenticated User Chat Context',
+        steps: [
+          'Login as any user',
+          'Open chat widget',
+          'Verify personalized welcome message'
+        ],
+        expected: 'Welcome message includes user name, shows authenticated context',
+        testData: 'Logged in user'
+      },
+      {
+        id: 'CHAT_008',
+        type: 'edge',
+        title: 'Empty Message Handling',
+        steps: [
+          'Open chat widget',
+          'Try to send empty message',
+          'Try to send only spaces',
+          'Verify empty message prevention'
+        ],
+        expected: 'Empty messages not sent, input field remains active',
+        testData: 'Empty or whitespace-only input'
+      },
+      {
+        id: 'CHAT_009',
+        type: 'positive',
+        title: 'Multi-line Message Support',
+        steps: [
+          'Open chat widget',
+          'Type message with Shift+Enter for new lines',
+          'Send multi-line message',
+          'Verify proper formatting'
+        ],
+        expected: 'Multi-line messages display correctly with line breaks',
+        testData: 'Multi-line text'
+      },
+      {
+        id: 'CHAT_010',
+        type: 'positive',
+        title: 'Chat Status Indicators',
+        steps: [
+          'Observe chat button status indicator',
+          'Open chat and check header status',
+          'Verify online/offline indicators'
+        ],
+        expected: 'Green dot indicates online status, status shown in chat header',
+        testData: 'Chat availability status'
+      }
     ]
   };
 
@@ -477,7 +840,7 @@ const TestCases = () => {
         </div>
 
         <Tabs defaultValue="authentication" className="space-y-6" data-testid="test-cases-tabs">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
             <TabsTrigger value="authentication" className="flex items-center" data-testid="auth-tab">
               <User className="h-4 w-4 mr-2" />
               Authentication
@@ -497,6 +860,18 @@ const TestCases = () => {
             <TabsTrigger value="checkout" className="flex items-center" data-testid="checkout-tab">
               <CreditCard className="h-4 w-4 mr-2" />
               Checkout
+            </TabsTrigger>
+            <TabsTrigger value="wishlist" className="flex items-center" data-testid="wishlist-tab">
+              <Heart className="h-4 w-4 mr-2" />
+              Wishlist
+            </TabsTrigger>
+            <TabsTrigger value="compare" className="flex items-center" data-testid="compare-tab">
+              <GitCompare className="h-4 w-4 mr-2" />
+              Compare
+            </TabsTrigger>
+            <TabsTrigger value="chatbot" className="flex items-center" data-testid="chatbot-tab">
+              <MessageCircle className="h-4 w-4 mr-2" />
+              TestMartBot
             </TabsTrigger>
           </TabsList>
 

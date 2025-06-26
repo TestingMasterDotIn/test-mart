@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import Header from '@/components/Header';
@@ -125,41 +126,9 @@ const Login = () => {
                 Login
               </Button>
             </form>
-
-            <div className="mt-6 pt-6 border-t">
-              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 font-semibold">Test Login Credentials:</p>
-              
-              <div className="space-y-3 mb-4">
-                <div className="text-xs bg-gray-100 dark:bg-gray-800 p-3 rounded">
-                  <div className="font-medium mb-1">Admin User:</div>
-                  <div>Email: admin@test.com</div>
-                  <div>Password: admin123</div>
-                  <div className="text-gray-500 mt-1">Role: Administrator</div>
-                </div>
-                
-                <div className="text-xs bg-gray-100 dark:bg-gray-800 p-3 rounded">
-                  <div className="font-medium mb-1">Regular Buyer:</div>
-                  <div>Email: buyer@test.com</div>
-                  <div>Password: buyer123</div>
-                  <div className="text-gray-500 mt-1">Role: Customer</div>
-                </div>
-                
-                <div className="text-xs bg-gray-100 dark:bg-gray-800 p-3 rounded">
-                  <div className="font-medium mb-1">Guest User:</div>
-                  <div>Email: guest@test.com</div>
-                  <div>Password: guest123</div>
-                  <div className="text-gray-500 mt-1">Role: Guest</div>
-                </div>
-                
-                <div className="text-xs bg-red-50 dark:bg-red-900/20 p-3 rounded border border-red-200 dark:border-red-800">
-                  <div className="font-medium mb-1 text-red-700 dark:text-red-300">Locked Account:</div>
-                  <div>Email: locked@test.com</div>
-                  <div>Password: locked123</div>
-                  <div className="text-red-500 mt-1">Status: Account Locked</div>
-                </div>
-              </div>
-              
+            <br></br>
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">Quick Login Options:</p>
+
               <div className="grid grid-cols-2 gap-2">
                 <Button
                   variant="outline"
@@ -206,6 +175,43 @@ const Login = () => {
                   Test Locked
                 </Button>
               </div>
+
+
+            <div className="mt-6 pt-6 border-t">
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 font-semibold">Test Login Credentials:</p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="p-4 bg-green-50 dark:bg-green-950 rounded-lg" data-testid="valid-admin-creds">
+                  <Badge className="mb-2 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Valid - Admin</Badge>
+                  <p className="text-sm font-mono">admin@test.com</p>
+                  <p className="text-sm font-mono">admin123</p>
+                </div>
+                
+                <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-lg" data-testid="valid-buyer-creds">
+                  <Badge className="mb-2 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">Valid - Buyer</Badge>
+                  <p className="text-sm font-mono">buyer@test.com</p>
+                  <p className="text-sm font-mono">buyer123</p>
+                </div>
+                
+                <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg" data-testid="valid-guest-creds">
+                  <Badge className="mb-2 bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200">Valid - Guest</Badge>
+                  <p className="text-sm font-mono">guest@test.com</p>
+                  <p className="text-sm font-mono">guest123</p>
+                </div>
+                
+                <div className="p-4 bg-red-50 dark:bg-red-950 rounded-lg" data-testid="locked-user-creds">
+                  <Badge className="mb-2 bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">Locked User</Badge>
+                  <p className="text-sm font-mono">locked@test.com</p>
+                  <p className="text-sm font-mono">locked123</p>
+                </div>
+              </div>
+              
+              <div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-950 rounded-lg" data-testid="invalid-creds">
+                <Badge className="mb-2 bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">Invalid Credentials</Badge>
+                <p className="text-sm font-mono">Try: wrong@test.com / wrongpass</p>
+              </div>
+              
+
             </div>
 
             <div className="mt-4 text-center">

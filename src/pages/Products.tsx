@@ -9,8 +9,9 @@ import Header from '@/components/Header';
 import SpecialProductContent from '@/components/SpecialProductContent';
 import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
+import { useComparison } from '@/contexts/ComparisonContext';
 import { products, categories, Product } from '@/data/products';
-import { Star, ShoppingCart, Eye, Heart } from 'lucide-react';
+import { Star, ShoppingCart, Eye, Heart, GitCompare } from 'lucide-react';
 
 const Products = () => {
   // Sort products by ID initially
@@ -21,6 +22,7 @@ const Products = () => {
   const [filterCategory, setFilterCategory] = useState('all');
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const { addToCompare, isInCompare } = useComparison();
 
   useEffect(() => {
     let filtered = [...products];
@@ -186,14 +188,28 @@ const Products = () => {
                   </Button>
                 </Link>
                 
-                <Button
-                  onClick={() => toggleWishlist(product)}
-                  variant="outline"
-                  className={`w-full md:w-auto card-button ${isInWishlist(product.id) ? 'text-red-500 border-red-500' : ''}`}
-                  data-testid={`toggle-wishlist-${product.id}`}
-                >
-                  <Heart className={`h-4 w-4 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
-                </Button>
+                <div className="flex space-x-2 w-full md:w-auto">
+                  <Button
+                    onClick={() => toggleWishlist(product)}
+                    variant="outline"
+                    className={`flex-1 md:w-auto card-button ${isInWishlist(product.id) ? 'text-red-500 border-red-500' : ''}`}
+                    data-testid={`toggle-wishlist-${product.id}`}
+                    title="Add to Wishlist"
+                  >
+                    <Heart className={`h-4 w-4 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
+                  </Button>
+                  
+                  <Button
+                    onClick={() => addToCompare(product)}
+                    variant="outline"
+                    className={`flex-1 md:w-auto card-button ${isInCompare(product.id) ? 'text-blue-500 border-blue-500' : ''}`}
+                    disabled={isInCompare(product.id)}
+                    data-testid={`add-to-compare-${product.id}`}
+                    title="Add to Compare"
+                  >
+                    <GitCompare className={`h-4 w-4 ${isInCompare(product.id) ? 'fill-current' : ''}`} />
+                  </Button>
+                </div>
                 
                 <Button
                   onClick={() => handleAddToCart(product)}
