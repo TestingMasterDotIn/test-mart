@@ -283,16 +283,81 @@ const Checkout = () => {
                 <CardTitle>Apply Coupon</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex space-x-2">
-                  <Input
-                    placeholder="Enter coupon code"
-                    value={couponCode}
-                    onChange={(e) => setCouponCode(e.target.value)}
-                    data-testid="coupon-input"
-                  />
-                  <Button onClick={handleApplyCoupon} data-testid="apply-coupon-button">
-                    Apply
-                  </Button>
+                <div className="space-y-4">
+                  <div className="flex space-x-2">
+                    <Input
+                      placeholder="Enter coupon code"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value)}
+                      data-testid="coupon-input"
+                    />
+                    <Button onClick={handleApplyCoupon} data-testid="apply-coupon-button">
+                      Apply
+                    </Button>
+                  </div>
+                  
+                  <div className="border-t pt-4">
+                    <h4 className="font-semibold mb-3 text-sm">Available Coupon Codes:</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between items-center p-2 bg-green-50 dark:bg-green-900/20 rounded border border-green-200 dark:border-green-800">
+                        <div>
+                          <code className="font-mono font-semibold text-green-700 dark:text-green-300">SAVE10</code>
+                          <span className="text-green-600 dark:text-green-400 ml-2">- 10% Off</span>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => {
+                            setCouponCode('SAVE10');
+                            applyCoupon('SAVE10');
+                          }}
+                          className="text-xs"
+                        >
+                          Apply
+                        </Button>
+                      </div>
+                      
+                      <div className="flex justify-between items-center p-2 bg-blue-50 dark:bg-blue-900/20 rounded border border-blue-200 dark:border-blue-800">
+                        <div>
+                          <code className="font-mono font-semibold text-blue-700 dark:text-blue-300">WELCOME20</code>
+                          <span className="text-blue-600 dark:text-blue-400 ml-2">- 20% Off</span>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => {
+                            setCouponCode('WELCOME20');
+                            applyCoupon('WELCOME20');
+                          }}
+                          className="text-xs"
+                        >
+                          Apply
+                        </Button>
+                      </div>
+                      
+                      <div className="flex justify-between items-center p-2 bg-purple-50 dark:bg-purple-900/20 rounded border border-purple-200 dark:border-purple-800">
+                        <div>
+                          <code className="font-mono font-semibold text-purple-700 dark:text-purple-300">TEST50</code>
+                          <span className="text-purple-600 dark:text-purple-400 ml-2">- 50% Off</span>
+                        </div>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => {
+                            setCouponCode('TEST50');
+                            applyCoupon('TEST50');
+                          }}
+                          className="text-xs"
+                        >
+                          Apply
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
+                      💡 Click "Apply" next to any coupon code to use it instantly!
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>

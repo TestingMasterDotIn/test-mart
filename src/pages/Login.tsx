@@ -127,7 +127,39 @@ const Login = () => {
             </form>
 
             <div className="mt-6 pt-6 border-t">
-              <p className="text-sm text-gray-600 mb-4">Quick Login Options:</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 font-semibold">Test Login Credentials:</p>
+              
+              <div className="space-y-3 mb-4">
+                <div className="text-xs bg-gray-100 dark:bg-gray-800 p-3 rounded">
+                  <div className="font-medium mb-1">Admin User:</div>
+                  <div>Email: admin@test.com</div>
+                  <div>Password: admin123</div>
+                  <div className="text-gray-500 mt-1">Role: Administrator</div>
+                </div>
+                
+                <div className="text-xs bg-gray-100 dark:bg-gray-800 p-3 rounded">
+                  <div className="font-medium mb-1">Regular Buyer:</div>
+                  <div>Email: buyer@test.com</div>
+                  <div>Password: buyer123</div>
+                  <div className="text-gray-500 mt-1">Role: Customer</div>
+                </div>
+                
+                <div className="text-xs bg-gray-100 dark:bg-gray-800 p-3 rounded">
+                  <div className="font-medium mb-1">Guest User:</div>
+                  <div>Email: guest@test.com</div>
+                  <div>Password: guest123</div>
+                  <div className="text-gray-500 mt-1">Role: Guest</div>
+                </div>
+                
+                <div className="text-xs bg-red-50 dark:bg-red-900/20 p-3 rounded border border-red-200 dark:border-red-800">
+                  <div className="font-medium mb-1 text-red-700 dark:text-red-300">Locked Account:</div>
+                  <div>Email: locked@test.com</div>
+                  <div>Password: locked123</div>
+                  <div className="text-red-500 mt-1">Status: Account Locked</div>
+                </div>
+              </div>
+              
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">Quick Login Options:</p>
               <div className="grid grid-cols-2 gap-2">
                 <Button
                   variant="outline"
@@ -150,6 +182,28 @@ const Login = () => {
                   data-testid="quick-buyer-login"
                 >
                   Buyer Login
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setEmail('guest@test.com');
+                    setPassword('guest123');
+                  }}
+                  data-testid="quick-guest-login"
+                >
+                  Guest Login
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setEmail('locked@test.com');
+                    setPassword('locked123');
+                  }}
+                  data-testid="quick-locked-login"
+                >
+                  Test Locked
                 </Button>
               </div>
             </div>

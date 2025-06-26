@@ -5,12 +5,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import Header from '@/components/Header';
 import { useCart } from '@/contexts/CartContext';
+import { useWishlist } from '@/contexts/WishlistContext';
 import { products } from '@/data/products';
-import { Star, ShoppingCart, ArrowLeft } from 'lucide-react';
+import { Star, ShoppingCart, ArrowLeft, Heart } from 'lucide-react';
 
 const ProductDetails = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
   
   const product = products.find(p => p.id === id);
 
@@ -103,17 +105,29 @@ const ProductDetails = () => {
                 )}
               </div>
 
-              <Button
-                onClick={handleAddToCart}
-                disabled={!product.inStock}
-                size="lg"
-                className="w-full card-button"
-                data-testid="add-to-cart-detail"
-                data-component-name="Card"
-              >
-                <ShoppingCart className="h-5 w-5 mr-2 flex-shrink-0" />
-                <span className="whitespace-nowrap">Add to Cart</span>
-              </Button>
+              <div className="flex space-x-3">
+                <Button
+                  onClick={handleAddToCart}
+                  disabled={!product.inStock}
+                  size="lg"
+                  className="flex-1 card-button"
+                  data-testid="add-to-cart-detail"
+                  data-component-name="Card"
+                >
+                  <ShoppingCart className="h-5 w-5 mr-2 flex-shrink-0" />
+                  <span className="whitespace-nowrap">Add to Cart</span>
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => toggleWishlist(product)}
+                  size="lg"
+                  className={`px-4 ${isInWishlist(product.id) ? 'text-red-500 border-red-500' : ''}`}
+                  data-testid="toggle-wishlist-detail"
+                >
+                  <Heart className={`h-5 w-5 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
+                </Button>
+              </div>
             </div>
           </div>
         </div>

@@ -8,8 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import Header from '@/components/Header';
 import SpecialProductContent from '@/components/SpecialProductContent';
 import { useCart } from '@/contexts/CartContext';
+import { useWishlist } from '@/contexts/WishlistContext';
 import { products, categories, Product } from '@/data/products';
-import { Star, ShoppingCart, Eye } from 'lucide-react';
+import { Star, ShoppingCart, Eye, Heart } from 'lucide-react';
 
 const Products = () => {
   // Sort products by ID initially
@@ -19,6 +20,7 @@ const Products = () => {
   const [sortBy, setSortBy] = useState('id');
   const [filterCategory, setFilterCategory] = useState('all');
   const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
 
   useEffect(() => {
     let filtered = [...products];
@@ -183,6 +185,15 @@ const Products = () => {
                     <span className="whitespace-nowrap overflow-hidden text-ellipsis">View Details</span>
                   </Button>
                 </Link>
+                
+                <Button
+                  onClick={() => toggleWishlist(product)}
+                  variant="outline"
+                  className={`w-full md:w-auto card-button ${isInWishlist(product.id) ? 'text-red-500 border-red-500' : ''}`}
+                  data-testid={`toggle-wishlist-${product.id}`}
+                >
+                  <Heart className={`h-4 w-4 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
+                </Button>
                 
                 <Button
                   onClick={() => handleAddToCart(product)}

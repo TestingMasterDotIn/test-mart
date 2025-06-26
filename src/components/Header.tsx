@@ -3,7 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
-import { ShoppingCart, User, LogOut, Search, Home, TestTube } from 'lucide-react';
+import { useWishlist } from '@/contexts/WishlistContext';
+import { useComparison } from '@/contexts/ComparisonContext';
+import { ShoppingCart, User, LogOut, Search, Home, TestTube, Heart, GitCompare } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import ThemeToggle from './ThemeToggle';
 
@@ -15,6 +17,8 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery = '' }) => {
   const { user, logout, isAuthenticated } = useAuth();
   const { totalItems } = useCart();
+  const { wishlist } = useWishlist();
+  const { compareList } = useComparison();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -44,6 +48,14 @@ const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery = '' }) => {
                 data-testid="products-nav-link"
               >
                 Products
+              </Link>
+              <Link 
+                to="/compare" 
+                className="text-gray-600 dark:text-gray-300 hover:text-primary transition-colors flex items-center"
+                data-testid="compare-nav-link"
+              >
+                <GitCompare className="h-4 w-4 mr-1" />
+                Compare ({compareList.length})
               </Link>
               <Link 
                 to="/test-cases" 
@@ -83,6 +95,24 @@ const Header: React.FC<HeaderProps> = ({ onSearch, searchQuery = '' }) => {
 
           <div className="flex items-center space-x-4">
             <ThemeToggle />
+            
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="relative"
+              onClick={() => navigate('/wishlist')}
+              data-testid="wishlist-button"
+            >
+              <Heart className="h-5 w-5" />
+              {wishlist.length > 0 && (
+                <Badge 
+                  className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center"
+                  data-testid="wishlist-badge"
+                >
+                  {wishlist.length}
+                </Badge>
+              )}
+            </Button>
             
             <Link to="/cart" className="relative" data-testid="cart-link">
               <Button variant="ghost" size="sm" className="relative">
