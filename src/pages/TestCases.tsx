@@ -104,6 +104,38 @@ public class ${testCase.id.replace(/_/g, '')}Test {
         categoryFilter.click();
         ` : ''}
         
+        ${testCase.id.includes('Wishlist') ? `
+        // Verify wishlist icon is always visible in top-right
+        WebElement wishlistIcon = driver.findElement(By.cssSelector("[data-testid='toggle-wishlist-1']"));
+        assert(wishlistIcon.isDisplayed());
+        ` : ''}
+        
+        ${testCase.id.includes('Add to Cart') ? `
+        // Verify Add to Cart button prominence
+        WebElement addToCartBtn = driver.findElement(By.cssSelector("[data-testid='add-to-cart-1']"));
+        assert(addToCartBtn.isDisplayed());
+        ` : ''}
+        
+        ${testCase.id.includes('Hover') ? `
+        // Hover over product card
+        WebElement productCard = driver.findElement(By.cssSelector("[data-testid='product-card-1']"));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(productCard).perform();
+        
+        // Wait for secondary actions to appear
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[data-testid='add-to-compare-1']")));
+        ` : ''}
+        
+        ${testCase.id.includes('Quick View') ? `
+        // Hover over product image and click Quick View
+        WebElement productCard = driver.findElement(By.cssSelector("[data-testid='product-card-1']"));
+        Actions actions = new Actions(driver);
+        actions.moveToElement(productCard).perform();
+        
+        WebElement quickViewBtn = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("[data-testid='quick-view-1']")));
+        quickViewBtn.click();
+        ` : ''}
+        
         // Verify expected result
         // ${testCase.expected}
         WebElement productContainer = driver.findElement(By.cssSelector("[data-testid='product-grid']"));
@@ -243,6 +275,43 @@ test.describe('${testCase.id} - ${testCase.title}', () => {
     ${testCase.id.includes('Filter') ? `
     // Apply category filter
     await page.selectOption('[data-testid="category-filter"]', 'Electronics');
+    ` : ''}
+    
+    ${testCase.id.includes('Wishlist') ? `
+    // Verify wishlist icon is always visible in top-right
+    await expect(page.locator('[data-testid="toggle-wishlist-1"]')).toBeVisible();
+    ` : ''}
+    
+    ${testCase.id.includes('Add to Cart') ? `
+    // Verify Add to Cart button prominence and styling
+    const addToCartBtn = page.locator('[data-testid="add-to-cart-1"]');
+    await expect(addToCartBtn).toBeVisible();
+    await expect(addToCartBtn).toHaveClass(/gradient/);
+    ` : ''}
+    
+    ${testCase.id.includes('Hover') ? `
+    // Hover over product card to reveal secondary actions
+    const productCard = page.locator('[data-testid="product-card-1"]');
+    await productCard.hover();
+    
+    // Wait for secondary actions to appear
+    await expect(page.locator('[data-testid="add-to-compare-1"]')).toBeVisible();
+    
+    // Move away and verify actions disappear
+    await page.locator('body').hover();
+    await expect(page.locator('[data-testid="add-to-compare-1"]')).toBeHidden();
+    ` : ''}
+    
+    ${testCase.id.includes('Quick View') ? `
+    // Hover over product image to reveal Quick View
+    const productCard = page.locator('[data-testid="product-card-1"]');
+    await productCard.hover();
+    
+    // Click Quick View button
+    await page.click('[data-testid="quick-view-1"]');
+    
+    // Verify modal opens
+    await expect(page.locator('[role="dialog"]')).toBeVisible();
     ` : ''}
     
     // Verify expected result: ${testCase.expected}
@@ -555,6 +624,72 @@ test.describe('${testCase.id} - ${testCase.title}', () => {
         ],
         expected: 'No results message should appear gracefully',
         testData: 'Search: "!@#$%^&*()"'
+      },
+      {
+        id: 'PROD_007',
+        type: 'positive',
+        title: 'Enhanced Product Card Wishlist Icon Visibility',
+        steps: [
+          'Navigate to /products',
+          'Verify heart icon is visible in top-right corner of each product card',
+          'Verify icon is always visible (not hidden behind hover)',
+          'Check icon appears prominently without hovering'
+        ],
+        expected: 'Heart icon should be always visible in top-right corner of product cards',
+        testData: 'All product cards'
+      },
+      {
+        id: 'PROD_008',
+        type: 'positive',
+        title: 'Enhanced Add to Cart Button Prominence',
+        steps: [
+          'Navigate to /products',
+          'Locate Add to Cart button on product cards',
+          'Verify button has gradient background and prominent styling',
+          'Check button is easily distinguishable from other buttons'
+        ],
+        expected: 'Add to Cart button should have gradient styling and be visually prominent',
+        testData: 'All product cards'
+      },
+      {
+        id: 'PROD_009',
+        type: 'positive',
+        title: 'Product Card Hover Secondary Actions',
+        steps: [
+          'Navigate to /products',
+          'Hover over any product card',
+          'Verify compare and share buttons appear below wishlist icon',
+          'Verify buttons disappear when hover ends'
+        ],
+        expected: 'Secondary action buttons (compare, share) should appear on hover below wishlist icon',
+        testData: 'Any product card'
+      },
+      {
+        id: 'PROD_010',
+        type: 'positive',
+        title: 'Product Card Quick View on Hover',
+        steps: [
+          'Navigate to /products',
+          'Hover over product image area',
+          'Verify Quick View button appears with overlay',
+          'Click Quick View to open modal'
+        ],
+        expected: 'Quick View button should appear on image hover and open product modal when clicked',
+        testData: 'Any product card'
+      },
+      {
+        id: 'PROD_011',
+        type: 'negative',
+        title: 'Verify Removal of Legacy UI Elements',
+        steps: [
+          'Navigate to /products',
+          'Inspect product cards for old UI elements',
+          'Verify "View Details" button is not present',
+          'Verify "Add to Compare" is not immediately visible (only on hover)',
+          'Confirm new enhanced design is implemented'
+        ],
+        expected: 'Old UI elements should be removed, new enhanced design should be implemented',
+        testData: 'All product cards'
       }
     ],
     specialProducts: [
@@ -639,15 +774,15 @@ test.describe('${testCase.id} - ${testCase.title}', () => {
       {
         id: 'SPECIAL_007',
         type: 'edge',
-        title: 'Special Product Details View',
+        title: 'Special Product Quick View',
         steps: [
           'Navigate to /products',
-          'Click "View Details" on iframe product',
-          'Verify product details page',
-          'Check if special content renders'
+          'Hover over iframe product card',
+          'Click "Quick View" button that appears',
+          'Verify product details modal opens'
         ],
-        expected: 'Product details page should display with special content if implemented',
-        testData: 'Product details for ID: 13'
+        expected: 'Product quick view modal should display with special content if implemented',
+        testData: 'Product quick view for ID: 13'
       },
       {
         id: 'SPECIAL_008',
@@ -903,7 +1038,8 @@ test.describe('${testCase.id} - ${testCase.title}', () => {
         title: 'Add Product to Wishlist from Products Page',
         steps: [
           'Navigate to /products',
-          'Click heart icon on any product card',
+          'Locate heart icon in top-right corner of any product card',
+          'Click the heart icon (always visible)',
           'Verify product added to wishlist'
         ],
         expected: 'Heart icon fills with red color, success toast shown, wishlist counter updates',
@@ -1015,7 +1151,8 @@ test.describe('${testCase.id} - ${testCase.title}', () => {
         title: 'Add Product to Compare from Products Page',
         steps: [
           'Navigate to /products',
-          'Click compare icon (GitCompare) on product card',
+          'Hover over any product card to reveal secondary actions',
+          'Click compare icon (GitCompare) that appears below wishlist',
           'Verify product added to comparison'
         ],
         expected: 'Compare icon shows blue color, success toast shown, compare counter updates in header',

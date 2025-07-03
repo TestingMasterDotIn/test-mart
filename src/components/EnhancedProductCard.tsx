@@ -105,55 +105,70 @@ const EnhancedProductCard: React.FC<EnhancedProductCardProps> = ({
   return (
     <>
       <Card 
-        className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 relative overflow-hidden"
+        className="group cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-3 relative overflow-hidden border-0 bg-card/50 backdrop-blur-sm shadow-lg"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        data-testid={`product-card-${product.id}`}
       >
         {/* Badges */}
-        <div className="absolute top-2 left-2 z-10 flex flex-col gap-1">
+        <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
           {isNew && (
-            <Badge className="bg-green-500 hover:bg-green-600">
+            <Badge className="bg-green-600 hover:bg-green-700 text-white shadow-lg">
               NEW
             </Badge>
           )}
           {isTrending && (
-            <Badge className="bg-orange-500 hover:bg-orange-600">
+            <Badge className="bg-orange-600 hover:bg-orange-700 text-white shadow-lg">
               <TrendingUp className="h-3 w-3 mr-1" />
               TRENDING
             </Badge>
           )}
           {isOnSale && (
-            <Badge className="bg-red-500 hover:bg-red-600">
+            <Badge className="bg-red-600 hover:bg-red-700 text-white shadow-lg">
               {Math.round(((originalPrice! - product.price) / originalPrice!) * 100)}% OFF
             </Badge>
           )}
         </div>
 
-        {/* Action Buttons */}
-        <div className={`absolute top-2 right-2 z-10 flex flex-col gap-1 transition-opacity duration-300 ${
-          isHovered ? 'opacity-100' : 'opacity-0'
+        {/* Wishlist Button - Always Visible */}
+        <div className="absolute top-3 right-3 z-10">
+          <Button
+            size="sm"
+            variant="secondary"
+            className={`h-12 w-12 p-0 rounded-full shadow-lg border border-border/50 backdrop-blur-sm transition-all duration-200 ${
+              isInWishlist(product.id) 
+                ? 'bg-red-50 hover:bg-red-100 border-red-200' 
+                : 'bg-background/95 hover:bg-primary hover:text-primary-foreground'
+            }`}
+            onClick={handleWishlistToggle}
+            data-testid={`toggle-wishlist-${product.id}`}
+          >
+            <Heart className={`h-6 w-6 transition-all duration-200 ${
+              isInWishlist(product.id) 
+                ? 'fill-red-500 text-red-500 scale-110' 
+                : 'text-foreground/70'
+            }`} />
+          </Button>
+        </div>
+
+        {/* Secondary Action Buttons - Show on Hover */}
+        <div className={`absolute top-18 right-3 z-10 flex flex-col gap-2 transition-all duration-300 ${
+          isHovered ? 'opacity-100 transform translate-x-0' : 'opacity-0 transform translate-x-2'
         }`}>
           <Button
             size="sm"
             variant="secondary"
-            className="h-8 w-8 p-0 bg-white/90 hover:bg-white"
-            onClick={handleWishlistToggle}
-          >
-            <Heart className={`h-4 w-4 ${isInWishlist(product.id) ? 'fill-red-500 text-red-500' : ''}`} />
-          </Button>
-          <Button
-            size="sm"
-            variant="secondary"
-            className="h-8 w-8 p-0 bg-white/90 hover:bg-white"
+            className="h-9 w-9 p-0 bg-background/90 hover:bg-primary hover:text-primary-foreground shadow-lg border border-border/50 backdrop-blur-sm"
             onClick={handleCompareToggle}
             disabled={isInCompare(product.id)}
+            data-testid={`add-to-compare-${product.id}`}
           >
             <GitCompare className="h-4 w-4" />
           </Button>
           <Button
             size="sm"
             variant="secondary"
-            className="h-8 w-8 p-0 bg-white/90 hover:bg-white"
+            className="h-9 w-9 p-0 bg-background/90 hover:bg-primary hover:text-primary-foreground shadow-lg border border-border/50 backdrop-blur-sm"
             onClick={handleShare}
           >
             <Share2 className="h-4 w-4" />
@@ -176,7 +191,8 @@ const EnhancedProductCard: React.FC<EnhancedProductCardProps> = ({
               <Button
                 variant="secondary"
                 onClick={handleQuickView}
-                className="bg-white/90 hover:bg-white"
+                className="bg-background/95 hover:bg-primary hover:text-primary-foreground shadow-lg backdrop-blur-sm border border-border/50"
+                data-testid={`quick-view-${product.id}`}
               >
                 <Eye className="h-4 w-4 mr-2" />
                 Quick View
@@ -185,7 +201,7 @@ const EnhancedProductCard: React.FC<EnhancedProductCardProps> = ({
 
             {/* Sale Timer */}
             {isOnSale && timeLeft && (
-              <div className="absolute bottom-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-xs flex items-center">
+              <div className="absolute bottom-2 left-2 bg-red-600 text-white px-2 py-1 rounded-lg text-xs flex items-center shadow-lg">
                 <Clock className="h-3 w-3 mr-1" />
                 {timeLeft}
               </div>
@@ -249,11 +265,12 @@ const EnhancedProductCard: React.FC<EnhancedProductCardProps> = ({
           <Button
             onClick={handleAddToCart}
             disabled={!product.inStock}
-            className="w-full"
+            className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 font-semibold border-0"
             size="sm"
+            data-testid={`add-to-cart-${product.id}`}
           >
             <ShoppingCart className="h-4 w-4 mr-2" />
-            Add to Cart
+            {!product.inStock ? 'Out of Stock' : 'Add to Cart'}
           </Button>
         </div>
       </Card>
